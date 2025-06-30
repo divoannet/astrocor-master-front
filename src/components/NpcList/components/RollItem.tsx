@@ -41,7 +41,7 @@ export const RollItem = ({
         {label}
         {Boolean(onLabelChange) && (
           <Popover.Root positioning={{ placement: 'top' }} open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <Popover.Trigger>
+            <Popover.Trigger asChild>
               <IconButton size='xs' variant='ghost'>
                 <LuPencilLine />
               </IconButton>
