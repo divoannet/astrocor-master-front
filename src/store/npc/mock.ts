@@ -1,5 +1,6 @@
 export const MOCK_NPC = {
   id: 1,
+  region: 'Бастион',
   name: 'Лейна из Пылевых Сводов',
   image: 'https://i.pinimg.com/736x/82/4c/7d/824c7d9637e41ff647e89231bdda011d.jpg',
   type: 'архивариус-беглянка',
@@ -25,6 +26,7 @@ export const MOCK_NPC = {
 
 export const MOCK_NPC_2 = {
   id: 2,
+  region: 'Фортуна Розенгард',
   name: 'Тарелл Медноспин',
   image: '',
   type: 'лесной вахтер',
@@ -50,6 +52,7 @@ export const MOCK_NPC_2 = {
 
 export const MOCK_NPC_3 = {
   id: 3,
+  region: 'Фортуна Розенгард',
   name: 'Фелинетта Броль',
   image: '',
   type: 'городская распорядительница',

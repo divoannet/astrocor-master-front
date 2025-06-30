@@ -35,3 +35,17 @@
 .npc-list-item {
   cursor: pointer;
 }
+
+.region-list {
+  max-height: 300px;
+  overflow: auto;
+}
+
+.region-item {
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.region-item:hover {
+  background: var(--chakra-colors-bg-muted);
+}

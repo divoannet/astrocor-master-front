@@ -16,6 +16,9 @@ export const NpcListPage = () => {
 
   const toggleDeleteDialog = usePageStore(state => state.toggleDeleteDialog);
 
+  const setCheckedRegion = useNpcStore(state => state.setCheckedRegion);
+  const setActiveId = useNpcStore(state => state.setActiveId);
+
   const extra = useNpcStore(state => state.extra);
   const setExtra = useNpcStore(state => state.setExtra);
 
@@ -25,13 +28,23 @@ export const NpcListPage = () => {
   }
 
   useEffect(() => {
+    const checkedRegion = localStorage.getItem('checkedRegion');
+    if (checkedRegion) {
+      setCheckedRegion(checkedRegion);
+    }
+
+    const activeId = localStorage.getItem('activeId');
+    if (activeId) {
+      setActiveId(parseInt(activeId));
+    }
+
     loadList();
   }, [])
 
   return (
     <Grid
       templateRows="min-content 1fr"
-      templateColumns="20% 80%"
+      templateColumns="25% 75%"
       templateAreas={`"list card" "list info"`}
       className="npc-wrapper"
       gap={4}

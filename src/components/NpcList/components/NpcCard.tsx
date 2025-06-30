@@ -2,6 +2,7 @@ import { Card } from "@chakra-ui/react"
 import { useNpcStore } from "@/store";
 import { TextItem } from "./TextItem";
 import { ImagePopover } from "./ImagePopover";
+import { RegionSelect } from "./RegionSelect";
 
 export const NpcCard = () => {
 
@@ -44,6 +45,7 @@ export const NpcCard = () => {
           }}
           copy
         />
+        <RegionSelect />
         <TextItem
           value={type}
           onChange={handleChangeType}

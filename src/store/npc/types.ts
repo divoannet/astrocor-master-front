@@ -12,9 +12,19 @@ export interface NpcStoreTypes {
     delete: boolean,
   },
 
-  npcList: { name: string, id: number, image: string }[],
+  npcList: {
+    name: string,
+    id: number,
+    image: string,
+    region: string,
+  }[],
   loadNpcList: () => Promise<void>,
+  regionList: Record<string, any[]>,
+  checkedRegion: string;
+  setCheckedRegion: (value: string) => void,
 
+  activeId: number,
+  setActiveId: (activeId: number) => void,
   loadNpc: (id: number) => Promise<void>,
 
   createNpc: () => Promise<void>,
@@ -28,6 +38,9 @@ export interface NpcStoreTypes {
 
   name: string,
   setName: (value: string) => void,
+
+  region: string,
+  setRegion: (region: string) => void,
 
   type: string,
   setType: (value: string) => void,
