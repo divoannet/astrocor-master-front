@@ -1,0 +1,37 @@
+#root {
+  margin: 0 auto;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  padding: 0 0 64px;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  width: 100%;
+  padding: 16px 24px;
+
+  background: var(--chakra-colors-bg);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: var(--chakra-colors-border-muted);
+  color: var(--chakra-colors-fg);
+}
+
+.npc-wrapper {
+  height: calc(100vh - 76px);
+}
+
+.field-preview {
+  white-space: pre-line;
+}
+
+.npc-list-item {
+  cursor: pointer;
+}
