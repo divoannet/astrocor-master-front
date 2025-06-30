@@ -30,11 +30,12 @@ export const TextItem = ({
   const [localValue, setLocalValue] = useState('');
 
   const edited = useEditable({
+    submitMode: 'enter',
     defaultValue: "Click to edit",
     placeholder: placeholder || 'Двойное нажатие для редактирования',
     value: localValue,
     onValueChange: (e) => setLocalValue(e.value),
-    onValueCommit: () => onChange(value),
+    onValueCommit: () => onChange(localValue),
     onValueRevert: () => setLocalValue(value),
     onInteractOutside: () => setLocalValue(value),
     activationMode: 'dblclick',

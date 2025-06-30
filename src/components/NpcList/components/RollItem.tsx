@@ -1,12 +1,13 @@
 import { Box, Field, Group, HStack, IconButton, Input, NumberInput, Popover } from "@chakra-ui/react"
 import { LuCheck, LuCopy, LuPencilLine } from "react-icons/lu"
 import { useClipboard } from "@/hooks/useClipboard";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FocusEvent } from "react";
 
 interface Props {
   label: string;
   value: number;
   onChange: (newValue: number) => void;
+  onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
   onLabelChange?: (newValue: string) => void;
   copy?: boolean;
 }
@@ -15,6 +16,7 @@ export const RollItem = ({
   label,
   value,
   onChange,
+  onBlur,
   onLabelChange,
   copy,
 }: Props) => {
@@ -31,6 +33,14 @@ export const RollItem = ({
     setLocalLabel(event.target.value)
   }
 
+  const resetLabel = () => {
+    setLocalLabel(label);
+  }
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    onBlur && onBlur(event);
+  }
+
   useEffect(() => {
     setLocalLabel(label)
   }, [label]);
@@ -40,7 +50,7 @@ export const RollItem = ({
       <Box minW="180px">
         {label}
         {Boolean(onLabelChange) && (
-          <Popover.Root positioning={{ placement: 'top' }} open={open} onOpenChange={(e) => setOpen(e.open)}>
+          <Popover.Root positioning={{ placement: 'top' }} open={open} onInteractOutside={resetLabel} onOpenChange={(e) => setOpen(e.open)}>
             <Popover.Trigger asChild>
               <IconButton size='xs' variant='ghost'>
                 <LuPencilLine />
@@ -64,7 +74,12 @@ export const RollItem = ({
           </Popover.Root>
         )}
       </Box>
-      <NumberInput.Root value={`${value}`} onValueChange={(e) => onChange(Number(e.value) || 0)} width="80px">
+      <NumberInput.Root
+        value={`${value}`}
+        onValueChange={(e) => onChange(Number(e.value) || 0)}
+        width="80px"
+        onBlur={handleBlur}
+      >
         <NumberInput.Control />
         <NumberInput.Input />
       </NumberInput.Root>

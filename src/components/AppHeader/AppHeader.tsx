@@ -1,10 +1,11 @@
-import {Box, Flex, Heading, IconButton} from "@chakra-ui/react";
-import {HamburgerIcon} from "@/components/icons";
-import {usePageStore} from "@/store";
+import { Box, Group, Flex, Heading, IconButton, Loader } from "@chakra-ui/react";
+import { HamburgerIcon } from "@/components/icons";
+import { useNpcStore, usePageStore } from "@/store";
 import { ColorModeButton } from "../ui/color-mode";
 
 export const AppHeader = () => {
   const toggleMenu = usePageStore(state => state.toggleMainMenu);
+  const update = useNpcStore(state => state.fetching.update);
 
   return (
     <header className="app-header">
@@ -19,9 +20,14 @@ export const AppHeader = () => {
             Мастерская Астролябии Коридорных Фонарей
           </Heading>
         </Box>
-        <div>
+        <Group gap="xs">
+          {update && (
+            <Box w='60px'>
+              <Loader />
+            </Box>
+          )}
           <ColorModeButton />
-        </div>
+        </Group>
       </Flex>
     </header>
   )

@@ -53,7 +53,11 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
   },
 
   createNpc: async () => {},
-  updateNpc: async () => {},
+  updateNpc: async () => {
+    set(state => ({ fetching: { ...state.fetching, update: true } }))
+    await new Promise((res) => setTimeout(() => res(''), 1500));
+    set(state => ({ fetching: { ...state.fetching, update: false } }))
+  },
   deleteNpc: async () => {},
 
   id: 0,
