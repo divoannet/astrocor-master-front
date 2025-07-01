@@ -1,6 +1,6 @@
-import { Box, Card, Grid, GridItem, Group } from "@chakra-ui/react";
+import { Box, Button, Card, Flex, Grid, GridItem, Group } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useNpcStore } from "@/store";
+import { useNpcStore, usePageStore } from "@/store";
 import { NpcList } from "./components/NpcList";
 import { NpcCard } from "./components/NpcCard";
 import { DeleteDialog } from "./components/DeleteDialog";
@@ -18,6 +18,8 @@ export const NpcListPage = () => {
 
   const setCheckedRegion = useNpcStore(state => state.setCheckedRegion);
   const setActiveId = useNpcStore(state => state.setActiveId);
+
+  const toggleDeleteDialog = usePageStore(state => state.toggleDeleteDialog);
 
   useEffect(() => {
     const checkedRegion = localStorage.getItem('checkedRegion');
@@ -68,8 +70,21 @@ export const NpcListPage = () => {
           <FieldFeatures />
           <FieldTriggers />
           <FieldExtra />
+          <Card.Root>
+            <Card.Body>
+              <Flex justifyContent='flex-end'>
+                <Button
+                  size='sm'
+                  variant='outline'
+                  colorPalette='red'
+                  onClick={() => toggleDeleteDialog(true)}
+                >
+                  Удалить перонажа
+                </Button>
+              </Flex>
+            </Card.Body>
+          </Card.Root>
         </Box>
-
         <DeleteDialog />
       </GridItem>
     </Grid>

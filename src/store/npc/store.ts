@@ -1,8 +1,20 @@
 import { create } from "zustand/react";
-import { type NpcStoreTypes } from "./types";
+import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { MOCK_LIST } from "./mock";
 
-export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
+export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
+  // TEMP
+  addNpc: npc => {
+    set(store => ({
+      fullNpcList: [
+        ...store.fullNpcList,
+        npc,
+      ]
+    }))
+  },
+  fullNpcList: [...MOCK_LIST],
+  // /TEMP
+
   fetching: {
     list: false,
     npc: false,
@@ -25,7 +37,7 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
   },
   loadNpcList: async () => {
     const regions: Record<string, any[]> = {};
-    MOCK_LIST.forEach(item => {
+    get().fullNpcList.forEach(item => {
       const locItem = {
         name: item.name,
         id: item.id,
@@ -41,7 +53,7 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
     })
 
     set({
-      npcList: MOCK_LIST.map(item => ({
+      npcList: get().fullNpcList.map(item => ({
         name: item.name,
         id: item.id,
         image: item.image,
@@ -63,7 +75,7 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
     }
   },
   loadNpc: async (id: number) => {
-    const char = MOCK_LIST.find(item => item.id === id);
+    const char = get().fullNpcList.find(item => item.id === id);
     if (!char) return;
 
     set({
@@ -88,9 +100,7 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
 
   createNpc: async () => { },
   updateNpc: async () => {
-    set(state => ({ fetching: { ...state.fetching, update: true } }))
     await new Promise((res) => setTimeout(() => res(''), 1500));
-    set(state => ({ fetching: { ...state.fetching, update: false } }))
   },
   deleteNpc: async () => { },
 
@@ -132,7 +142,7 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
     }
   })),
 
-  customRollTitle: '',
+  customRollTitle: 'Особые',
   setCustomRollTitle: customRollTitle => set({ customRollTitle }),
 
   danger: '',

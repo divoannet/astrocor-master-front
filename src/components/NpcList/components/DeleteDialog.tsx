@@ -14,7 +14,7 @@ export const DeleteDialog = () => {
   }
 
   return (
-    <Dialog.Root open={open}>
+    <Dialog.Root open={open} onOpenChange={e => toggleDeleteDialog(e.open)}>
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>

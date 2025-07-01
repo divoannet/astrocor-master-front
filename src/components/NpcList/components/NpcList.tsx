@@ -1,6 +1,7 @@
-import { useNpcStore } from "@/store";
-import { Accordion, Box, Card, Image, Spacer } from "@chakra-ui/react";
+import { useNpcStore, usePageStore } from "@/store";
+import { Accordion, Box, Button, Card, Image, Spacer } from "@chakra-ui/react";
 import defaultAvatar from '@/assets/default_avatar.png';
+import { CreateNpcForm } from "./createNpcForm";
 
 export const NpcList = () => {
   const setActiveId = useNpcStore(state => state.setActiveId);
@@ -9,8 +10,18 @@ export const NpcList = () => {
   const checkedRegion = useNpcStore(state => state.checkedRegion);
   const setCheckedRegion = useNpcStore(state => state.setCheckedRegion);
 
+  const toggleCreateModal = usePageStore(state => state.toggleCreateNpcModal);
+
   return (
     <Box spaceY={4} scrollBehavior='auto'>
+      <Button
+        onClick={() => toggleCreateModal(true)}
+        variant='outline'
+        width='100%'
+      >
+        Создать перонажа
+      </Button>
+      <CreateNpcForm />
       <Accordion.Root
         variant='enclosed'
         collapsible value={[checkedRegion]}

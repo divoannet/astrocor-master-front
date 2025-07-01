@@ -80,7 +80,7 @@ export const RollForm = () => {
   }, [rolls, customRollTitle]);
 
   return (
-    <Dialog.Root size='xs' open={open} placement="center">
+    <Dialog.Root size='xs' open={open} placement="center" onOpenChange={e => toggle(e.open)}>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>

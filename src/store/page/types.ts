@@ -10,6 +10,9 @@ export interface PageStoreType {
   deleteDialogOpen: boolean;
   toggleDeleteDialog: (open?: boolean) => void;
 
+  createNpcModalOpen: boolean;
+  toggleCreateNpcModal: (open?: boolean) => void;
+
   screen: ScreenType;
   setScreen: (screen: ScreenType) => void;
 }
