@@ -48,7 +48,7 @@ export const TextItem = ({
   return (
     <Fieldset.Root size="lg">
       {label && <Fieldset.Legend>{label}</Fieldset.Legend>}
-      <Fieldset.Content>
+      <Fieldset.Content marginTop={1}>
         <Editable.RootProvider
           value={edited}
         >

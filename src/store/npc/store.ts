@@ -125,6 +125,12 @@ export const useNpcStore = create<NpcStoreTypes>((set, get) => ({
     custom: 0,
   },
   setRoll: (key, value) => set(store => ({ rolls: { ...store.rolls, [key]: value } })),
+  setRolls: values => set(store => ({
+    rolls: {
+      ...store.rolls,
+      ...values,
+    }
+  })),
 
   customRollTitle: '',
   setCustomRollTitle: customRollTitle => set({ customRollTitle }),

@@ -19,8 +19,9 @@ export const NpcList = () => {
         {Object.entries(regionList).map(([region, items]) => {
           return (
             <Accordion.Item key={region} value={region}>
-              <Accordion.ItemTrigger>{region}</Accordion.ItemTrigger>
+              <Accordion.ItemTrigger cursor='pointer'>{region}</Accordion.ItemTrigger>
               <Accordion.ItemContent spaceY={4}>
+                <Spacer h={1} />
                 {items.map(npc => (
                   <Card.Root
                     key={npc.id}
@@ -45,7 +46,7 @@ export const NpcList = () => {
                     </Box>
                   </Card.Root>
                 ))}
-                <Spacer h={4} />
+                <Spacer h={1} />
               </Accordion.ItemContent>
             </Accordion.Item>
           )

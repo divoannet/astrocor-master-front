@@ -2,9 +2,15 @@
   margin: 0 auto;
 }
 
+.chakra-button.compact {
+  padding: 2px !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px;
+}
+
 .app-wrapper {
   min-height: 100vh;
-  padding: 0 0 64px;
 }
 
 .app-header {
@@ -22,6 +28,12 @@
   border-bottom-style: solid;
   border-color: var(--chakra-colors-border-muted);
   color: var(--chakra-colors-fg);
+}
+
+.toolbar {
+  position: absolute;
+  top: 4px;
+  right: 8px;
 }
 
 .npc-wrapper {

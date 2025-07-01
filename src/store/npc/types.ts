@@ -63,6 +63,7 @@ export interface NpcStoreTypes {
     custom: number,
   },
   setRoll: (key: keyof NpcStoreTypes['rolls'], value: number) => void,
+  setRolls: (values: Partial<NpcStoreTypes['rolls']>) => void;
 
   customRollTitle: string,
   setCustomRollTitle: (value: string) => void,

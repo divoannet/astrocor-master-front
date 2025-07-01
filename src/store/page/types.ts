@@ -4,6 +4,9 @@ export interface PageStoreType {
   mainMenuOpen: boolean;
   toggleMainMenu: (open?: boolean) => void;
 
+  rollsSettingDialogOpen: boolean;
+  toggleRollsSettingDialog: (open?: boolean) => void;
+
   deleteDialogOpen: boolean;
   toggleDeleteDialog: (open?: boolean) => void;
 
