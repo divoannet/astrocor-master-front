@@ -1,9 +1,6 @@
 export type ScreenType = 'npc' | 'traits';
 
 export interface PageStoreType {
-  mainMenuOpen: boolean;
-  toggleMainMenu: (open?: boolean) => void;
-
   rollsSettingDialogOpen: boolean;
   toggleRollsSettingDialog: (open?: boolean) => void;
 

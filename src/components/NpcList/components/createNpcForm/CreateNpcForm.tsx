@@ -2,7 +2,6 @@ import { useNpcStore, usePageStore } from "@/store"
 import { Button, Dialog, Portal } from "@chakra-ui/react"
 import { NpcForm } from "./Form";
 import { useNpcFormStore } from "@/store/npcForm/store";
-import { type NpcStoreTypes as RealNpcStoreTypes } from "@/store/npc/types";
 
 export const CreateNpcForm = () => {
   const open = usePageStore(state => state.createNpcModalOpen);
@@ -13,25 +12,8 @@ export const CreateNpcForm = () => {
   const createNpc = useNpcFormStore(state => state.createNpc);
   const resetForm = useNpcFormStore(state => state.reset);
 
-  // TEMP
-  const fullNpcList = useNpcStore(state => state.fullNpcList);
-  const getValues = useNpcFormStore(state => state.getValues);
-  const addNpc = useNpcStore(state => state.addNpc);
-  // /TEMP
-
   const handleSave = async () => {
     await createNpc();
-
-    // TEMP
-    const vl = getValues();
-    const npc: RealNpcStoreTypes = {
-      ...vl,
-      name: vl.name || `Ежевичка ${fullNpcList.length + 1}`,
-      id: fullNpcList.length + 1,
-    }
-    addNpc(npc);
-    // /TEMP
-
     resetForm();
     await loadNpcList();
   }

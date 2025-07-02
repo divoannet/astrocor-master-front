@@ -1,34 +1,49 @@
-import { Box, Group, Flex, Heading, IconButton, Loader } from "@chakra-ui/react";
-import { HamburgerIcon } from "@/components/icons";
+import { type MouseEvent } from 'react';
+import { Box, Group, Loader, Link, Spacer } from "@chakra-ui/react";
 import { usePageStore } from "@/store";
 import { ColorModeButton } from "../ui/color-mode";
 
 export const AppHeader = () => {
-  const toggleMenu = usePageStore(state => state.toggleMainMenu);
+  const setScreen = usePageStore(state => state.setScreen);
   const update = false;
+
+  const handleCharsClick = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setScreen('npc');
+  }
+
+  const handleSpecsClick = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setScreen('traits');
+  }
 
   return (
     <header className="app-header">
-      <Flex align="center" w='100%'>
-        <div>
-          <IconButton variant="ghost" onClick={() => toggleMenu()}>
-            <HamburgerIcon />
-          </IconButton>
-        </div>
-        <Box flexGrow={1} >
-          <Heading size="2xl">
-            Мастерская Астролябии Коридорных Фонарей
-          </Heading>
-        </Box>
-        <Group gap="xs">
-          {update && (
-            <Box w='60px'>
-              <Loader />
-            </Box>
-          )}
-          <ColorModeButton />
-        </Group>
-      </Flex>
+      <Box flexGrow={1} spaceY={2}>
+        <Spacer h={20} />
+        <Link
+          className="header-button chars"
+          onClick={handleCharsClick}
+          href='#'
+        >
+          Персонажи
+        </Link>
+        <Link
+          className="header-button specs"
+          onClick={handleSpecsClick}
+          href='#'
+        >
+          Специализации
+        </Link>
+      </Box>
+      <Group gap="xs">
+        {update && (
+          <Box w='60px'>
+            <Loader />
+          </Box>
+        )}
+        <ColorModeButton />
+      </Group>
     </header>
   )
 }

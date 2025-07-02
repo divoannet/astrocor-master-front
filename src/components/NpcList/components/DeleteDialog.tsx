@@ -4,13 +4,15 @@ import { Button, Dialog } from "@chakra-ui/react";
 export const DeleteDialog = () => {
   const name = useNpcStore(state => state.name);
   const deleteNpc = useNpcStore(state => state.deleteNpc);
+  const loadNpcList = useNpcStore(state => state.loadNpcList);
 
   const open = usePageStore(state => state.deleteDialogOpen);
   const toggleDeleteDialog = usePageStore(state => state.toggleDeleteDialog);
 
-  const handleConfirm = () => {
-    deleteNpc();
+  const handleConfirm = async () => {
+    await deleteNpc();
     toggleDeleteDialog(false);
+    await loadNpcList();
   }
 
   return (

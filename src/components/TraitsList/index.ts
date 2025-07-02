@@ -1,0 +1,1 @@
+export { TraitsListPage } from './TraitsListPage';

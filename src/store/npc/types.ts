@@ -32,11 +32,6 @@ export interface NpcStoreTypes {
 }
 
 export interface NpcStoreActionTypes {
-  // TEMP
-  addNpc: (npc: NpcStoreTypes) => void;
-  fullNpcList: NpcStoreTypes[],
-  // /TEMP
-
   npcList: NpcListItemType[],
   regionList: Record<string, any[]>,
   checkedRegion: string;
@@ -44,9 +39,8 @@ export interface NpcStoreActionTypes {
 
   loadNpcList: () => Promise<void>,
   setCheckedRegion: (value: string) => void,
-  setActiveId: (activeId: number) => void,
+  setActiveId: (activeId: number) => Promise<void>,
   loadNpc: (id: number) => Promise<void>,
-  createNpc: () => Promise<void>,
   updateNpc: () => Promise<void>,
   deleteNpc: () => Promise<void>,
   setImage: (value: string) => void,

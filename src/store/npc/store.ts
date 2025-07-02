@@ -1,20 +1,8 @@
 import { create } from "zustand/react";
-import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
-import { MOCK_LIST } from "./mock";
+import { type NpcStoreTypes, type NpcStoreActionTypes, type NpcListItemType } from "./types";
+import { toaster } from "@/components/ui/toaster";
 
 export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
-  // TEMP
-  addNpc: npc => {
-    set(store => ({
-      fullNpcList: [
-        ...store.fullNpcList,
-        npc,
-      ]
-    }))
-  },
-  fullNpcList: [...MOCK_LIST],
-  // /TEMP
-
   fetching: {
     list: false,
     npc: false,
@@ -37,72 +25,122 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
   },
   loadNpcList: async () => {
     const regions: Record<string, any[]> = {};
-    get().fullNpcList.forEach(item => {
-      const locItem = {
-        name: item.name,
-        id: item.id,
-        image: item.image,
-        region: item.region,
-      };
 
-      if (regions[item.region]) {
-        regions[item.region].push(locItem);
-        return;
-      }
-      regions[item.region] = [locItem];
-    })
+    try {
+      const response = await fetch('https://f.etrin.ru/api/charlist/npclist');
+      const list = await response.json();
 
-    set({
-      npcList: get().fullNpcList.map(item => ({
-        name: item.name,
-        id: item.id,
-        image: item.image,
-        region: item.region,
-      })),
-      regionList: regions,
-    })
-    const id = get().activeId || MOCK_LIST[0]?.id || 0;
-    await get().setActiveId(id);
+      list.forEach((item: NpcListItemType) => {
+        const region = item.region || 'Прочие';
+        if (regions[region]) {
+          regions[region].push(item);
+          return;
+        }
+        regions[region] = [item];
+      })
+
+      set({
+        npcList: list,
+        regionList: regions,
+      })
+      const id = get().activeId || list[0]?.id || 0;
+      await get().setActiveId(id);
+    } finally {
+
+    }
   },
 
   activeId: 0,
-  setActiveId: activeId => {
+  setActiveId: async (activeId) => {
     if (get().activeId !== activeId) {
       set({ activeId });
       get().loadNpc(activeId);
-      localStorage.setItem('activeId', `${activeId}`);
-      get().setCheckedRegion(get().region)
+      await localStorage.setItem('activeId', `${activeId}`);
     }
   },
   loadNpc: async (id: number) => {
-    const char = get().fullNpcList.find(item => item.id === id);
-    if (!char) return;
+    try {
+      const response = await fetch(`https://f.etrin.ru/api/charlist/npc?id=${id}`);
+      const char = await response.json();
+      if (!char) return;
 
-    set({
-      id: char.id,
-      name: char.name,
-      region: char.region,
-      image: char.image,
-      type: char.type,
-      description: char.description,
-      goal: char.goal,
-      relation: char.relation,
-      rolls: char.rolls,
-      customRollTitle: char.customRollTitle,
-      danger: char.danger,
-      features: char.features,
-      triggers: char.triggers,
-      checkDifficulty: char.checkDifficulty,
-      checkFailure: char.checkFailure,
-      extra: char.extra,
-    });
+      set({
+        id: char.id || 0,
+        name: char.name || '',
+        region: char.region || '',
+        image: char.image || '',
+        type: char.type || '',
+        description: char.description || '',
+        goal: char.goal || '',
+        relation: char.relation || '',
+        rolls: {
+          ...char.rolls,
+        },
+        customRollTitle: char.customRollTitle || '',
+        danger: char.danger || '',
+        features: char.features || '',
+        triggers: char.triggers || '',
+        checkDifficulty: char.checkDifficulty || 0,
+        checkFailure: char.checkFailure || '',
+        extra: char.extra || '',
+      });
+    } finally {
+
+    }
   },
 
-  createNpc: async () => { },
   updateNpc: async () => {
-    await new Promise((res) => setTimeout(() => res(''), 1500));
+    try {
+      const params = {
+        id: get().id,
+        name: get().name || '',
+        region: get().region || '',
+        image: get().image || '',
+        type: get().type || '',
+        description: get().description || '',
+        goal: get().goal || '',
+        relation: get().relation || '',
+        rolls: {
+          ...get().rolls,
+        },
+        customRollTitle: get().customRollTitle || '',
+        danger: get().danger || '',
+        features: get().features || '',
+        triggers: get().triggers || '',
+        checkDifficulty: get().checkDifficulty || 0,
+        checkFailure: get().checkFailure || '',
+        extra: get().extra || '',
+      };
+      await fetch('https://f.etrin.ru/api/charlist/npc', {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
+      toaster.create({
+        type: 'success',
+        description: 'Сохранилось'
+      });
+    } finally {
+
+    }
+
   },
-  deleteNpc: async () => { },
+  deleteNpc: async () => {
+    try {
+      await fetch(`https://f.etrin.ru/api/charlist/npc?id=${get().activeId}`, {
+        method: 'DELETE',
+      });
+      toaster.create({
+        type: 'success',
+        description: 'Персонаж ушёл',
+      });
+    } finally {
+
+    }
+  },
 
   id: 0,
   image: '',

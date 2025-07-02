@@ -1,6 +1,7 @@
 import { create } from "zustand/react";
 import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { type NpcStoreTypes as RealNpcStoreTypes } from "../npc/types";
+import { toaster } from "@/components/ui/toaster";
 
 const initialForm: NpcStoreTypes = {
   errors: {},
@@ -29,10 +30,8 @@ const initialForm: NpcStoreTypes = {
 };
 
 export const useNpcFormStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
-  // TEMP
   getValues: () => {
-    const values: RealNpcStoreTypes = {
-      id: 0,
+    const values: Omit<RealNpcStoreTypes, 'id'> = {
       image: get().image,
       name: get().name,
       region: get().region,
@@ -58,12 +57,32 @@ export const useNpcFormStore = create<NpcStoreTypes & NpcStoreActionTypes>((set,
     };
     return values;
   },
-  // /TEMP
 
   errors: {},
 
   createNpc: async () => {
-    console.log('createNpc');
+    const params = get().getValues();
+    try {
+      await fetch('https://f.etrin.ru/api/charlist/npc', {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
+      set({ errors: {} })
+      toaster.create({
+        type: 'success',
+        description: 'Сохранилось'
+      });
+    } catch (e: any) {
+      toaster.create({
+        type: 'error',
+        description: 'Не сохранилось'
+      });
+      set({ errors: { save: e.error } })
+    }
   },
 
   reset: () => set({ ...initialForm, region: get().region }),

@@ -27,9 +27,7 @@ export interface NpcStoreTypes {
 }
 
 export interface NpcStoreActionTypes {
-  // TEMP
-  getValues: () => RealNpcStoreTypes;
-  // /TEMP
+  getValues: () => Omit<RealNpcStoreTypes, 'id'>;
 
   createNpc: () => Promise<void>;
 
