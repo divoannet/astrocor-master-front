@@ -11,6 +11,12 @@ export const usePageStore = create<PageStoreType>(set => ({
   createNpcModalOpen: false,
   toggleCreateNpcModal: open => set(state => ({ createNpcModalOpen: typeof open === 'boolean' ? open : !state.createNpcModalOpen})),
 
+  createTraitModalOpen: false,
+  toggleCreateTraitModal: open => set(state => ({ createTraitModalOpen: typeof open === 'boolean' ? open : !state.createTraitModalOpen})),
+
   screen: 'npc',
-  setScreen: screen => set({screen}),
+  setScreen: screen => {
+    localStorage.setItem('screen', screen);
+    set({screen});
+  },
 }));

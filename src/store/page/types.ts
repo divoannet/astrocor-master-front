@@ -10,6 +10,9 @@ export interface PageStoreType {
   createNpcModalOpen: boolean;
   toggleCreateNpcModal: (open?: boolean) => void;
 
-  screen: ScreenType;
-  setScreen: (screen: ScreenType) => void;
+  createTraitModalOpen: boolean;
+  toggleCreateTraitModal: (open?: boolean) => void;
+
+  screen: string;
+  setScreen: (screen: string) => void;
 }

@@ -4,6 +4,7 @@ import { usePageStore } from "@/store";
 import { ColorModeButton } from "../ui/color-mode";
 
 export const AppHeader = () => {
+  const screen = usePageStore(state => state.screen);
   const setScreen = usePageStore(state => state.setScreen);
   const update = false;
 
@@ -22,14 +23,14 @@ export const AppHeader = () => {
       <Box flexGrow={1} spaceY={2}>
         <Spacer h={20} />
         <Link
-          className="header-button chars"
+          className={`header-button chars ${screen === 'npc' && 'active'}`}
           onClick={handleCharsClick}
           href='#'
         >
           Персонажи
         </Link>
         <Link
-          className="header-button specs"
+          className={`header-button specs ${screen === 'traits' && 'active'}`}
           onClick={handleSpecsClick}
           href='#'
         >
