@@ -35,11 +35,11 @@ export interface NpcStoreActionTypes {
   npcList: NpcListItemType[],
   regionList: Record<string, any[]>,
   checkedRegion: string;
-  activeId: number,
+  activeId: null | number,
 
   loadNpcList: () => Promise<void>,
   setCheckedRegion: (value: string) => void,
-  setActiveId: (activeId: number) => Promise<void>,
+  setActiveId: (activeId: number | null) => Promise<void>,
   loadNpc: (id: number) => Promise<void>,
   updateNpc: () => Promise<void>,
   deleteNpc: () => Promise<void>,

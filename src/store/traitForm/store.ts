@@ -40,7 +40,6 @@ export const useTraitFormStore = create<TraitStoreState & TraitStoreActionsState
       ...item,
       [key]: value
     }) : item);
-    console.log(index, key, value);
     set({ tags: newValues });
   },
 

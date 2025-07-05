@@ -1,4 +1,4 @@
-import { Box, Button, Card, Flex, Grid, GridItem, Group } from "@chakra-ui/react";
+import { Box, Button, Card, Center, Flex, Grid, GridItem, Group } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useNpcStore, usePageStore } from "@/store";
 import { NpcList } from "./components/NpcList";
@@ -15,6 +15,7 @@ import { FieldExtra } from "./components/fields/FieldExtra";
 
 export const NpcListPage = () => {
   const loadList = useNpcStore(state => state.loadNpcList);
+  const id = useNpcStore(state => state.activeId);
 
   const setCheckedRegion = useNpcStore(state => state.setCheckedRegion);
   const setActiveId = useNpcStore(state => state.setActiveId);
@@ -48,43 +49,48 @@ export const NpcListPage = () => {
         <NpcList />
       </GridItem>
       <GridItem gridArea="card">
-        <NpcCard />
+        {id !== null ? <NpcCard /> : (
+          <Center h={4}>Нет выбранного персонажа</Center>
+        )}
       </GridItem>
       <GridItem gridArea="info" overflowY='auto'>
-        <Box spaceY={4} overflowY='auto'>
-          <FieldDescription />
-          <FieldRelation />
-          <Group attached alignItems="stretch" width='100%' justifyContent='stretch'>
-            <Card.Root size='sm' className="info">
-              <Card.Body>
-                <FieldDifficultyCheck />
-              </Card.Body>
-            </Card.Root>
-            <Card.Root size='sm' className="info" flexGrow='1'>
-              <Card.Body>
-                <FieldDifficultyFail />
-              </Card.Body>
-            </Card.Root>
-          </Group>
-          <FieldDangerReaction />
-          <FieldFeatures />
-          <FieldTriggers />
-          <FieldExtra />
-          <Card.Root>
-            <Card.Body>
-              <Flex justifyContent='flex-end'>
-                <Button
-                  size='sm'
-                  variant='outline'
-                  colorPalette='red'
-                  onClick={() => toggleDeleteDialog(true)}
-                >
-                  Удалить перонажа
-                </Button>
-              </Flex>
-            </Card.Body>
-          </Card.Root>
-        </Box>
+        {id !== null &&
+          (
+            <Box spaceY={4} overflowY='auto'>
+              <FieldDescription />
+              <FieldRelation />
+              <Group attached alignItems="stretch" width='100%' justifyContent='stretch'>
+                <Card.Root size='sm' className="info">
+                  <Card.Body>
+                    <FieldDifficultyCheck />
+                  </Card.Body>
+                </Card.Root>
+                <Card.Root size='sm' className="info" flexGrow='1'>
+                  <Card.Body>
+                    <FieldDifficultyFail />
+                  </Card.Body>
+                </Card.Root>
+              </Group>
+              <FieldDangerReaction />
+              <FieldFeatures />
+              <FieldTriggers />
+              <FieldExtra />
+              <Card.Root>
+                <Card.Body>
+                  <Flex justifyContent='flex-end'>
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      colorPalette='red'
+                      onClick={() => toggleDeleteDialog(true)}
+                    >
+                      Удалить перонажа
+                    </Button>
+                  </Flex>
+                </Card.Body>
+              </Card.Root>
+            </Box>
+          )}
         <DeleteDialog />
       </GridItem>
     </Grid>

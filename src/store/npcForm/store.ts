@@ -2,6 +2,7 @@ import { create } from "zustand/react";
 import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { type NpcStoreTypes as RealNpcStoreTypes } from "../npc/types";
 import { toaster } from "@/components/ui/toaster";
+import { saveNpc } from "@/components/NpcList/db";
 
 const initialForm: NpcStoreTypes = {
   errors: {},
@@ -63,14 +64,7 @@ export const useNpcFormStore = create<NpcStoreTypes & NpcStoreActionTypes>((set,
   createNpc: async () => {
     const params = get().getValues();
     try {
-      await fetch('https://f.etrin.ru/api/charlist/npc', {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        method: 'POST',
-        body: JSON.stringify(params),
-      });
+      await saveNpc(params);
       set({ errors: {} })
       toaster.create({
         type: 'success',

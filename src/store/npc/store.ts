@@ -1,6 +1,8 @@
 import { create } from "zustand/react";
-import { type NpcStoreTypes, type NpcStoreActionTypes, type NpcListItemType } from "./types";
+import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { toaster } from "@/components/ui/toaster";
+import { deleteNPC, getNpcById, getNpcList, saveNpc } from "@/components/NpcList/db";
+import type { NPCListItem } from "@/components/NpcList/db/types";
 
 export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
   fetching: {
@@ -27,10 +29,9 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
     const regions: Record<string, any[]> = {};
 
     try {
-      const response = await fetch('https://f.etrin.ru/api/charlist/npclist');
-      const list = await response.json();
+      const list = await getNpcList();
 
-      list.forEach((item: NpcListItemType) => {
+      list.forEach((item: NPCListItem) => {
         const region = item.region || 'Прочие';
         if (regions[region]) {
           regions[region].push(item);
@@ -43,25 +44,29 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         npcList: list,
         regionList: regions,
       })
-      const id = get().activeId || list[0]?.id || 0;
-      await get().setActiveId(id);
+      if (list[0] && get().activeId === null) {
+        const id = get().activeId || list[0]?.id || 0;
+        await get().setActiveId(id);
+      }
     } finally {
 
     }
   },
 
-  activeId: 0,
+  activeId: null,
   setActiveId: async (activeId) => {
-    if (get().activeId !== activeId) {
-      set({ activeId });
+    set({ activeId });
+
+    if (activeId !== null) {
       get().loadNpc(activeId);
       await localStorage.setItem('activeId', `${activeId}`);
+    } else {
+      localStorage.removeItem('activeId');
     }
   },
   loadNpc: async (id: number) => {
     try {
-      const response = await fetch(`https://f.etrin.ru/api/charlist/npc?id=${id}`);
-      const char = await response.json();
+      const char = await getNpcById(id);
       if (!char) return;
 
       set({
@@ -69,7 +74,6 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         name: char.name || '',
         region: char.region || '',
         image: char.image || '',
-        type: char.type || '',
         description: char.description || '',
         goal: char.goal || '',
         relation: char.relation || '',
@@ -111,14 +115,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         checkFailure: get().checkFailure || '',
         extra: get().extra || '',
       };
-      await fetch('https://f.etrin.ru/api/charlist/npc', {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        method: 'POST',
-        body: JSON.stringify(params),
-      });
+      await saveNpc(params);
       toaster.create({
         type: 'success',
         description: 'Сохранилось'
@@ -129,14 +126,18 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
 
   },
   deleteNpc: async () => {
+    const activeId = get().activeId;
     try {
-      await fetch(`https://f.etrin.ru/api/charlist/npc?id=${get().activeId}`, {
-        method: 'DELETE',
-      });
+      if (activeId === null) return;
+      await deleteNPC(activeId);
       toaster.create({
         type: 'success',
         description: 'Персонаж ушёл',
       });
+      get().setActiveId(null);
+      if (get().npcList.length === 0) {
+        get().setCheckedRegion('');
+      }
     } finally {
 
     }
