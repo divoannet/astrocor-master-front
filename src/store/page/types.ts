@@ -1,4 +1,4 @@
-export type ScreenType = 'npc' | 'traits';
+export type ScreenType = 'npc' | 'traits' | 'rules';
 
 export interface PageStoreType {
   rollsSettingDialogOpen: boolean;

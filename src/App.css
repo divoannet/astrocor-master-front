@@ -88,6 +88,9 @@ html.dark body {
 .header-button.specs:before {
   background-image: url('./assets/spec_icon.png');
 }
+.header-button.rules:before {
+  background-image: url('./assets/rules_icon.png');
+}
 
 .toolbar {
   position: absolute;
@@ -122,6 +125,13 @@ html.dark body {
 }
 
 .chakra-accordion__itemTrigger {
-    border: solid 1px #89928a;
-    background: #89928a33;
+  border: solid 1px #89928a;
+  background: #89928a33;
+}
+
+.rsw-ce {
+  background: #ffffff44;
+  max-height: 400px;
+  min-height: 200px;
+  overflow-y: auto;
 }

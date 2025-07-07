@@ -1,10 +1,11 @@
 import './App.css'
-import {AppHeader} from "@/components/AppHeader";
-import {NpcListPage} from "@/components/NpcList";
-import {TraitsListPage} from "@/components/TraitsList";
+import { AppHeader } from "@/components/AppHeader";
+import { NpcListPage } from "@/components/NpcList";
+import { RulesPage } from '@/components/RulesPage';
+import { TraitsListPage } from "@/components/TraitsList";
 import { Toaster } from "@/components/ui/toaster"
-import {Box} from "@chakra-ui/react";
-import {usePageStore} from "@/store";
+import { Box } from "@chakra-ui/react";
+import { usePageStore } from "@/store";
 import { useEffect } from 'react';
 
 function App() {
@@ -25,8 +26,9 @@ function App() {
 
       {screen === 'npc' && <NpcListPage />}
       {screen === 'traits' && <TraitsListPage />}
+      {screen === 'rules' && <RulesPage />}
 
-      <Toaster/>
+      <Toaster />
     </Box>
   )
 }

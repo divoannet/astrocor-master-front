@@ -62,6 +62,7 @@ export const ColorModeButton = React.forwardRef<
         size="sm"
         ref={ref}
         {...props}
+        color='paper'
         css={{
           _icon: {
             width: "5",

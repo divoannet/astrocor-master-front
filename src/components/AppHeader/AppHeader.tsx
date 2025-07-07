@@ -18,6 +18,11 @@ export const AppHeader = () => {
     setScreen('traits');
   }
 
+  const handleRulesClick = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setScreen('rules');
+  }
+
   return (
     <header className="app-header">
       <Box flexGrow={1} spaceY={2}>
@@ -35,6 +40,13 @@ export const AppHeader = () => {
           href='#'
         >
           Специализации
+        </Link>
+        <Link
+          className={`header-button rules ${screen === 'rules' && 'active'}`}
+          onClick={handleRulesClick}
+          href='#'
+        >
+          Правила
         </Link>
       </Box>
       <Group gap="xs">
