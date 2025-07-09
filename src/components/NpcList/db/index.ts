@@ -17,7 +17,11 @@ export const initDB = async () => {
 
 export const saveNpc = async (npc: Partial<NPC>) => {
   const db = await initDB();
-  await db.put(STORE_NAME, normalizeNPC(npc));
+  const values = { ...npc };
+  if (typeof npc.id !== 'number') {
+    values.id = await db.count(STORE_NAME);
+  }
+  await db.put(STORE_NAME, normalizeNPC(values));
 };
 
 export const getNpcList = async (full?: boolean): Promise<NPCListItem[]> => {

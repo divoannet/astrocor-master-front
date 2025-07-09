@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import type { TraitStoreActionsState, TraitStoreState } from "./types";
+import type { TraitItemType, TraitStoreActionsState, TraitStoreState } from "./types";
 import { toaster } from "@/components/ui/toaster";
+import { apiRequest } from "@/services/api";
 
 export const useTraitsStore = create<TraitStoreState & TraitStoreActionsState>((set, get) => ({
   fetching: false,
@@ -13,8 +14,7 @@ export const useTraitsStore = create<TraitStoreState & TraitStoreActionsState>((
   loadTraits: async () => {
     try {
       set({ fetching: true, });
-      const response = await fetch('https://f.etrin.ru/api/charlist/traitlist');
-      const traits = await response.json();
+      const traits = await apiRequest<TraitItemType[]>('/traitlist');
 
       set({ traits });
     } catch (e) {
@@ -30,7 +30,7 @@ export const useTraitsStore = create<TraitStoreState & TraitStoreActionsState>((
   addTrait: async () => {},
   removeTrait: async (id: number) => {
     try {
-      await fetch(`https://f.etrin.ru/api/charlist/trait?id=${id}`, {
+      await apiRequest(`/trait?id=${id}`, {
         method: 'DELETE',
       });
     }
@@ -42,7 +42,7 @@ export const useTraitsStore = create<TraitStoreState & TraitStoreActionsState>((
         id,
         draft: value,
       };
-      await fetch('https://f.etrin.ru/api/charlist/trait', {
+      await apiRequest('/trait', {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"

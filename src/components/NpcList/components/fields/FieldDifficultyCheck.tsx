@@ -14,7 +14,7 @@ export const FieldDifficultyCheck = () => {
 
   return (
     <TextItem
-      label="Типичная сложность при взаимодействии"
+      label="Типичная сложность"
       value={`${checkDifficulty}`}
       onChange={handleChangeDescription}
     />

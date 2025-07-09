@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { TraitStoreActionsState, TraitStoreState } from "./types";
 import { toaster } from "@/components/ui/toaster";
+import { apiRequest } from "@/services/api";
 
 const initialValues = {
   id: 0,
@@ -106,7 +107,7 @@ export const useTraitFormStore = create<TraitStoreState & TraitStoreActionsState
         params.id = get().id;
       }
 
-      await fetch('https://f.etrin.ru/api/charlist/trait', {
+      await apiRequest('/trait', {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"

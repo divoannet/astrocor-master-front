@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { RulesPageType } from "./types";
+import { apiRequest } from "@/services/api";
 
 export const useRulesStore = create<RulesPageType>(set => ({
   fetching: false,
@@ -9,8 +10,7 @@ export const useRulesStore = create<RulesPageType>(set => ({
   load: async () => {
     try {
       set({ fetching: true });
-      const response = await fetch('https://f.etrin.ru/api/charlist/rules');
-      const rules = await response.json();
+      const rules = await apiRequest<Record<string, string>>('/rules');;
       set({ rules });
     } finally {
       set({ fetching: false })
@@ -20,14 +20,14 @@ export const useRulesStore = create<RulesPageType>(set => ({
     try {
       set({ updating: true });
       const params = { id: key, value };
-      await fetch('https://f.etrin.ru/api/charlist/rules', {
+      await apiRequest('/rules', {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
         },
         method: 'PATCH',
         body: JSON.stringify(params),
-      });
+      })
     } finally {
       set({ updating: false });
     }

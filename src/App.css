@@ -135,3 +135,13 @@ html.dark body {
   min-height: 200px;
   overflow-y: auto;
 }
+
+*::selection {
+  background: #89928a;
+}
+*::-moz-selection {
+  background: #89928a;
+}
+*::-webkit-selection {
+  background: #89928a;
+}

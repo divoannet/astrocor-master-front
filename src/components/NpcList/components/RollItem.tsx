@@ -26,6 +26,8 @@ export const RollItem = ({
         color={hovered ? 'green.contrast' : 'fg'}
         onClick={() => copyToClipboard(`/roll ${value}d6>4`)}
         onPointerEnter={() => setHovered(true)} onPointerLeave={() => setHovered(false)}
+        minW={42}
+        textAlign='center'
       >
         <LuDices size={10} />
         {value}

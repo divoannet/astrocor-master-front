@@ -66,7 +66,7 @@ export const NpcList = () => {
           return (
             <Accordion.Item key={region} value={region}>
               <Accordion.ItemTrigger cursor='pointer'>{region}</Accordion.ItemTrigger>
-              <Accordion.ItemContent padding='1' spaceY={4}>
+              <Accordion.ItemContent padding='1'>
                 <Spacer h={1} />
                 {items.map(npc => (
                   <Card.Root
@@ -77,6 +77,8 @@ export const NpcList = () => {
                     size="sm"
                     className="npc-list-item"
                     colorPalette='success'
+                    borderRadius={0}
+                    borderColor="bg"
                     color={npcId === npc.id ? "green.contrast" : "bg.contrast"}
                     bg={npcId === npc.id ? "green" : "bg"}
                     onClick={() => setActiveId(npc.id)}
