@@ -66,7 +66,7 @@ export const useTraitFormStore = create<TraitStoreState & TraitStoreActionsState
     });
   },
   resetForm: () => {
-    get().setValues(initialValues);
+    get().setValues({...initialValues});
   },
 
   id: 0,

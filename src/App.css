@@ -6,9 +6,13 @@ html.light body {
   background: url('./assets/bg_light.png');
 }
 
-
 html.dark body {
   background: url('./assets/bg_dark.webp');
+}
+
+body.notFixed {
+  pointer-events: auto !important;
+  overflow: auto !important;
 }
 
 .chakra-card__root {
@@ -88,8 +92,17 @@ html.dark body {
 .header-button.specs:before {
   background-image: url('./assets/spec_icon.png');
 }
+
 .header-button.rules:before {
   background-image: url('./assets/rules_icon.png');
+}
+
+.header-button.charlists:before {
+  background-image: url('./assets/charlists_icon.png');
+}
+
+.dynamic-box {
+  transition: padding .25s ease-out;
 }
 
 .toolbar {
@@ -139,9 +152,11 @@ html.dark body {
 *::selection {
   background: #89928a;
 }
+
 *::-moz-selection {
   background: #89928a;
 }
+
 *::-webkit-selection {
   background: #89928a;
 }

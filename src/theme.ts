@@ -3,6 +3,9 @@ import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react"
 const config = defineConfig({
   theme: {
     tokens: {
+      cursor: {
+        menuitem: { value: 'pointer' }
+      },
       colors: {
         paper: {
           DEFAULT: { value: "#d7cdbd" },

@@ -15,6 +15,8 @@ export type TraitItemType = {
   id: number;
   title: string;
   draft: boolean;
+  epigraph: string;
+  description: string;
   specializing: boolean;
   tags: TagItemType[];
   secret: SecretType;
