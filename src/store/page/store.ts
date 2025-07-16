@@ -17,6 +17,9 @@ export const usePageStore = create<PageStoreType>(set => ({
     return { createTraitModalOpen: typeof open === 'boolean' ? open : !state.createTraitModalOpen };
   }),
 
+  searchDialogOpened: false,
+  toggleSearchDialog: open => set(state => ({ searchDialogOpened: typeof open === 'boolean' ? open : !state.searchDialogOpened })),
+
   screen: 'npc',
   setScreen: screen => {
     localStorage.setItem('screen', screen);

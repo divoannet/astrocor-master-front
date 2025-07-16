@@ -1,6 +1,9 @@
 export type ScreenType = 'npc' | 'traits' | 'rules';
 
 export interface PageStoreType {
+  searchDialogOpened: boolean;
+  toggleSearchDialog: (open?: boolean) => void;
+
   rollsSettingDialogOpen: boolean;
   toggleRollsSettingDialog: (open?: boolean) => void;
 

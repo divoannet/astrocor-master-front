@@ -42,7 +42,7 @@ const config = defineConfig({
           DEFAULT: { value: { _light: '{colors.paper}', _dark: '{colors.darkpaper}' } },
           subtle: { value: { _light: '{colors.paper}', _dark: '{colors.darkpaper}' } },
           muted: { value: { _light: '{colors.paper}', _dark: '{colors.darkpaper}' } },
-          emphasized: { value: { _light: '{colors.paper}', _dark: '{colors.darkpaper}' } },
+          emphasized: { value: { _light: '{colors.green.200}', _dark: '{colors.green.400}' } },
           inverted: { value: { _light: '{colors.darkpaper}', _dark: '{colors.paper}' } },
           panel: { value: { _light: '{colors.paper}', _dark: '{colors.darkpaper}' } },
           error: { value: { _light: '{colors.paper}', _dark: '{colors.darkpaper}' } },

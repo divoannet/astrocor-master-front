@@ -12,6 +12,7 @@ import { FieldDangerReaction } from "./components/fields/FieldDangerReaction";
 import { FieldFeatures } from "./components/fields/FieldFeatures";
 import { FieldTriggers } from "./components/fields/FieldTriggers";
 import { FieldExtra } from "./components/fields/FieldExtra";
+import { SearchDialog } from "./components/SearchDialog";
 
 export const NpcListPage = () => {
   const loadList = useNpcStore(state => state.loadNpcList);
@@ -21,6 +22,23 @@ export const NpcListPage = () => {
   const setActiveId = useNpcStore(state => state.setActiveId);
 
   const toggleDeleteDialog = usePageStore(state => state.toggleDeleteDialog);
+  const toggleSearchDialog = usePageStore(state => state.toggleSearchDialog);
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const pressedK = event.key === 'k' || event.key === 'K' || event.keyCode === 75;
+
+    if (
+      (isMac ? event.metaKey : event.ctrlKey) &&
+      pressedK &&
+      !event.altKey &&
+      !event.shiftKey
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleSearchDialog();
+    }
+  };
 
   useEffect(() => {
     const checkedRegion = localStorage.getItem('checkedRegion');
@@ -34,6 +52,12 @@ export const NpcListPage = () => {
     }
 
     loadList();
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [])
 
   return (
@@ -92,6 +116,7 @@ export const NpcListPage = () => {
             </Box>
           )}
         <DeleteDialog />
+        <SearchDialog />
       </GridItem>
     </Grid>
   )
