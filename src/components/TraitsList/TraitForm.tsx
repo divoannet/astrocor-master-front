@@ -39,7 +39,7 @@ export const TraitForm = () => {
 
   return (
     <Drawer.Root size='md' open={open}>
-      <Drawer.Positioner pointerEvents='none'>
+      <Drawer.Positioner pointerEvents='none' padding={0} marginTop={0} style={{ marginTop: '0px' }}>
         <Drawer.Content>
           <Drawer.CloseTrigger />
           <Drawer.Header>
