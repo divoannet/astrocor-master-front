@@ -86,10 +86,10 @@ export const deleteGroup = async (id: number) => {
   await db.delete(GROUP_STORE_NAME, id);
 };
 
-const getGroupTree = (groups: Group[], parentId: number | null): TreeGroupItem[] => {
+const composeGroupTree = (groups: Group[], parentId: number | null): TreeGroupItem[] => {
   return groups.filter(item => item.parentId === parentId).map(group => ({
     ...group,
-    childern: getGroupTree(groups, group.id),
+    childern: composeGroupTree(groups, group.id),
   })).sort((a, b) => b.sortOrder - a.sortOrder);
 };
 
@@ -97,7 +97,14 @@ export const getGroupList = async () => {
   const db = await initDB();
   let all = await db.getAll(GROUP_STORE_NAME);
 
-  return getGroupTree(all, null);
+  return all;
+}
+
+export const getGroupTree = async () => {
+  const db = await initDB();
+  let all = await db.getAll(GROUP_STORE_NAME);
+
+  return composeGroupTree(all, null);
 }
 
 export const getGroupById = async (id: number): Promise<Group | null> => {

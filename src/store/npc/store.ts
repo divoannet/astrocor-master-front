@@ -1,8 +1,8 @@
 import { create } from "zustand/react";
 import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { toaster } from "@/components/ui/toaster";
-import { deleteNPC, getNpcById, getNpcList, saveNpc, saveGroup, getGroupList, deleteGroup, getGroupById } from "@/components/NpcList/db";
-import type { NPCListItem } from "@/components/NpcList/db/types";
+import { deleteNPC, getNpcById, getNpcList, saveNpc, saveGroup, getGroupTree, deleteGroup, getGroupById, getGroupList } from "@/components/NpcList/db";
+import type { Group, NPCListItem } from "@/components/NpcList/db/types";
 
 export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
   fetching: {
@@ -21,6 +21,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
   npcList: [],
   regionList: {},
   groups: [],
+  groupList: [],
   checkedRegion: '',
   setCheckedRegion: checkedRegion => {
     localStorage.setItem('checkedRegion', checkedRegion);
@@ -31,7 +32,8 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
 
     try {
       const list = await getNpcList(true);
-      let groups = await getGroupList();
+      let groups = await getGroupTree();
+      let groupList = await getGroupList();
 
       list.forEach((item: NPCListItem) => {
         const region = item.region || 'Прочие';
@@ -46,6 +48,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         npcList: list as NpcStoreTypes[],
         regionList: regions,
         groups,
+        groupList,
       })
       if (list[0] && get().activeId === null) {
         const id = get().activeId || list[0]?.id || 0;
@@ -116,7 +119,6 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
       set({
         id: char.id || 0,
         name: char.name || '',
-        region: char.region || '',
         image: char.image || '',
         description: char.description || '',
         goal: char.goal || '',
@@ -149,6 +151,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         description: get().description || '',
         goal: get().goal || '',
         relation: get().relation || '',
+        groupId: get().groupId || 0,
         rolls: {
           ...get().rolls,
         },
@@ -200,6 +203,16 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
 
   region: 'Эрдофольд',
   setRegion: region => set({ region }),
+  getRegion: () => {
+    const getRoute = (regionId: number): string => {
+      const region = get().groupList.find(group => group.id === regionId);
+      if (!region) return '--';
+      const isRoot = region.parentId === null;
+      return isRoot ? region.name : `${getRoute(region.parentId as number)} » ${region.name}`;
+    }
+
+    return getRoute(get().groupId);
+  },
 
   type: '',
   setType: type => set({ type }),

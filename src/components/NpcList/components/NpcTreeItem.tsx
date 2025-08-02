@@ -13,9 +13,10 @@ import defaultAvatar from '@/assets/default_avatar.png';
 interface Props {
   group: TreeGroupItem;
   depth: number;
+  onMoveStart: (groupId: number) => void;
 }
 
-export const NpcTreeItem = ({ group, depth }: Props) => {
+export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
   const [edit, setEdit] = useState(false);
   const [groupName, setGroupName] = useState('');
   const list = useNpcStore(state => state.npcList);
@@ -52,6 +53,7 @@ export const NpcTreeItem = ({ group, depth }: Props) => {
         addFolder(group.id);
         break;
       case 'move-folder':
+        onMoveStart(group.id);
         break;
       case 'delete-folder':
         const confirmed = window.confirm('Удалить группу и все вложенные? Все персонажи переместятся в родительскую группу.');
@@ -176,7 +178,7 @@ export const NpcTreeItem = ({ group, depth }: Props) => {
       {group.open && <Box pl={6}>
         <Stack>
           {group.childern.length > 0 && group.childern.map(childGroup => (
-            <NpcTreeItem key={childGroup.id} group={childGroup} depth={depth + 1} />
+            <NpcTreeItem key={childGroup.id} group={childGroup} depth={depth + 1} onMoveStart={onMoveStart} />
           ))}
         </Stack>
         <Box pb={2}>

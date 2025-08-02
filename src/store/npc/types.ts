@@ -1,4 +1,4 @@
-import type { TreeGroupItem } from "@/components/NpcList/db/types";
+import type { Group, TreeGroupItem } from "@/components/NpcList/db/types";
 
 export type NpcListItemType = {
   name: string,
@@ -38,6 +38,7 @@ export interface NpcStoreActionTypes {
   npcList: NpcStoreTypes[],
   regionList: Record<string, any[]>,
   groups: TreeGroupItem[],
+  groupList: Group[],
   checkedRegion: string;
   activeId: null | number,
 
@@ -55,6 +56,8 @@ export interface NpcStoreActionTypes {
   setImage: (value: string) => void,
   setName: (value: string) => void,
   setRegion: (region: string) => void,
+  getRegion: () => string,
+  setGroupId: (groupId: number) => void,
   setType: (value: string) => void,
   setDescription: (value: string) => void,
   setGoal: (value: string) => void,

@@ -1,7 +1,7 @@
 import { Box, Card, Group, IconButton, Spacer, Text } from "@chakra-ui/react"
 import { useNpcStore, usePageStore } from "@/store";
 import { ImagePopover } from "./ImagePopover";
-import { RegionSelect } from "./RegionSelect";
+import { RegionSelect } from "./RegionSelect/RegionSelect";
 import { RollItem } from "./RollItem";
 import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import { FieldName } from "./fields/FieldName";
