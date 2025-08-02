@@ -11,6 +11,7 @@ const initialForm: NpcStoreTypes = {
   region: 'Эрдофольд',
   type: '',
   description: '',
+  groupId: 0,
   goal: '',
   relation: '',
   rolls: {
@@ -39,6 +40,7 @@ export const useNpcFormStore = create<NpcStoreTypes & NpcStoreActionTypes>((set,
       type: get().type,
       description: get().description,
       goal: get().goal,
+      groupId: get().groupId,
       relation: get().relation,
       rolls: {
         battle: +get().rolls.battle,
@@ -97,6 +99,9 @@ export const useNpcFormStore = create<NpcStoreTypes & NpcStoreActionTypes>((set,
 
   description: '',
   setDescription: description => set({ description }),
+
+  groupId: 0,
+  setGroupId: groupId => set({ groupId }),
 
   goal: '',
   setGoal: goal => set({ goal }),

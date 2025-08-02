@@ -14,6 +14,7 @@ export interface NPC {
   image: string;
   region: string;
   goal: string;
+  groupId: number;
   relation: string;
   customRollTitle: string;
   danger: string;
@@ -30,4 +31,16 @@ export interface NPCListItem {
   name: string;
   image: string;
   region: string;
+}
+
+export interface Group {
+  id: number;
+  name: string;
+  parentId: number | null;
+  sortOrder: number;
+  open: boolean;
+}
+
+export type TreeGroupItem = Group & {
+  childern: TreeGroupItem[];
 }

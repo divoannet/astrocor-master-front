@@ -7,6 +7,7 @@ export interface NpcStoreTypes {
   region: string;
   type: string;
   description: string;
+  groupId: number;
   goal: string;
   relation: string;
   rolls: {
@@ -44,6 +45,8 @@ export interface NpcStoreActionTypes {
   setType: (value: string) => void;
 
   setDescription: (value: string) => void;
+
+  setGroupId:  (value: number) => void;
 
   setGoal: (value: string) => void;
 

@@ -1,7 +1,7 @@
 import { create } from "zustand/react";
 import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { toaster } from "@/components/ui/toaster";
-import { deleteNPC, getNpcById, getNpcList, saveNpc } from "@/components/NpcList/db";
+import { deleteNPC, getNpcById, getNpcList, saveNpc, saveGroup, getGroupList, deleteGroup, getGroupById } from "@/components/NpcList/db";
 import type { NPCListItem } from "@/components/NpcList/db/types";
 
 export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
@@ -20,6 +20,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
 
   npcList: [],
   regionList: {},
+  groups: [],
   checkedRegion: '',
   setCheckedRegion: checkedRegion => {
     localStorage.setItem('checkedRegion', checkedRegion);
@@ -29,7 +30,8 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
     const regions: Record<string, any[]> = {};
 
     try {
-      const list = await getNpcList();
+      const list = await getNpcList(true);
+      let groups = await getGroupList();
 
       list.forEach((item: NPCListItem) => {
         const region = item.region || 'Прочие';
@@ -41,8 +43,9 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
       })
 
       set({
-        npcList: list,
+        npcList: list as NpcStoreTypes[],
         regionList: regions,
+        groups,
       })
       if (list[0] && get().activeId === null) {
         const id = get().activeId || list[0]?.id || 0;
@@ -60,10 +63,51 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
     if (activeId !== null) {
       get().loadNpc(activeId);
       await localStorage.setItem('activeId', `${activeId}`);
+      const char = await getNpcById(activeId);
+      char && await get().toggleFolder(char?.groupId, true);
+      await get().loadNpcList();
     } else {
       localStorage.removeItem('activeId');
     }
   },
+
+  addFolder: async (parentId) => {
+    get().toggleFolder(parentId, true);
+    await saveGroup({
+      name: 'Новая группа',
+      parentId,
+      sortOrder: 0,
+      open: false,
+    });
+    get().loadNpcList();
+  },
+  updateFolder: async (group) => {
+    await saveGroup(group);
+    get().loadNpcList();
+  },
+  removeFolder: async (id) => {
+    await deleteGroup(id);
+    get().loadNpcList();
+  },
+  moveFolder: async (id, parentId) => { },
+  toggleFolder: async (id, open) => {
+    if (typeof id !== 'number') return;
+
+    const group = await getGroupById(id);
+    if (!group) return;
+    const newValue = typeof open === 'boolean' ? open : !group.open;
+
+    await saveGroup({
+      ...group,
+      open: newValue,
+    });
+    if (newValue) {
+      if (typeof group.parentId === 'number') {
+        await get().toggleFolder(group.parentId, true);
+      }
+    }
+  },
+
   loadNpc: async (id: number) => {
     try {
       const char = await getNpcById(id);
@@ -76,6 +120,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         image: char.image || '',
         description: char.description || '',
         goal: char.goal || '',
+        groupId: char.groupId || 0,
         relation: char.relation || '',
         rolls: {
           ...char.rolls,
@@ -144,6 +189,9 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
   },
 
   id: 0,
+  groupId: 0,
+  setGroupId: (groupId: number) => set({ groupId }),
+
   image: '',
   setImage: image => set({ image }),
 

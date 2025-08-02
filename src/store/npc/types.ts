@@ -1,3 +1,5 @@
+import type { TreeGroupItem } from "@/components/NpcList/db/types";
+
 export type NpcListItemType = {
   name: string,
   id: number,
@@ -13,6 +15,7 @@ export interface NpcStoreTypes {
   type: string,
   description: string,
   goal: string,
+  groupId: number,
   relation: string,
   rolls: {
     battle: number,
@@ -32,12 +35,18 @@ export interface NpcStoreTypes {
 }
 
 export interface NpcStoreActionTypes {
-  npcList: NpcListItemType[],
+  npcList: NpcStoreTypes[],
   regionList: Record<string, any[]>,
+  groups: TreeGroupItem[],
   checkedRegion: string;
   activeId: null | number,
 
   loadNpcList: () => Promise<void>,
+  addFolder: (parentId: number) => Promise<void>,
+  updateFolder: (group: Partial<TreeGroupItem>) => Promise<void>,
+  removeFolder: (id: number) => Promise<void>,
+  moveFolder: (id: number, parentId: number) => Promise<void>,
+  toggleFolder: (id: number, open?: boolean) => void;
   setCheckedRegion: (value: string) => void,
   setActiveId: (activeId: number | null) => Promise<void>,
   loadNpc: (id: number) => Promise<void>,

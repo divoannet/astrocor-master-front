@@ -6,6 +6,7 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { LuDownload, LuFileJson2 } from "react-icons/lu";
 import { exportNpcData } from "../db";
 import { handleImportClick } from "../helpers";
+import { NpcTree } from "./NpcTree";
 
 export const NpcList = () => {
   const setActiveId = useNpcStore(state => state.setActiveId);
@@ -17,7 +18,7 @@ export const NpcList = () => {
 
   const toggleCreateModal = usePageStore(state => state.toggleCreateNpcModal);
 
-  const handleMenuClick = async ({value}: { value: string }) => {
+  const handleMenuClick = async ({ value }: { value: string }) => {
     switch (value) {
       case 'import':
         await handleImportClick();
@@ -54,54 +55,7 @@ export const NpcList = () => {
         </Menu.Root>
       </Group>
       <CreateNpcForm />
-      <Accordion.Root
-        variant='enclosed'
-        collapsible value={[checkedRegion]}
-        onValueChange={details => setCheckedRegion(details.value[0])}
-      >
-        {Object.entries(regionList).length === 0 && (
-          <Card.Root><Center>Список пока пуст</Center></Card.Root>
-        )}
-        {Object.entries(regionList).map(([region, items]) => {
-          return (
-            <Accordion.Item key={region} value={region}>
-              <Accordion.ItemTrigger cursor='pointer'>{region}</Accordion.ItemTrigger>
-              <Accordion.ItemContent padding='1'>
-                <Spacer h={1} />
-                {items.map(npc => (
-                  <Card.Root
-                    key={npc.id}
-                    flexDirection="row"
-                    alignItems="center"
-                    overflow="hidden"
-                    size="sm"
-                    className="npc-list-item"
-                    colorPalette='success'
-                    borderRadius={0}
-                    borderColor="bg"
-                    color={npcId === npc.id ? "green.contrast" : "bg.contrast"}
-                    bg={npcId === npc.id ? "green" : "bg"}
-                    onClick={() => setActiveId(npc.id)}
-                  >
-                    <Image
-                      objectFit="cover"
-                      width="40px"
-                      height="40px"
-                      src={npc.image || defaultAvatar}
-                    />
-                    <Box className="npc-list">
-                      <Card.Body padding={2}>
-                        {npc.name}
-                      </Card.Body>
-                    </Box>
-                  </Card.Root>
-                ))}
-                <Spacer h={1} />
-              </Accordion.ItemContent>
-            </Accordion.Item>
-          )
-        })}
-      </Accordion.Root>
+      <NpcTree />
     </Box>
   )
 }

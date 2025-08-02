@@ -8,6 +8,7 @@ export const normalizeNPC = (npc: Partial<NPC>): NPC => ({
   image: npc.image ?? '',
   region: npc.region ?? '',
   goal: npc.goal ?? '',
+  groupId: npc.groupId ?? 0,
   relation: npc.relation ?? '',
   customRollTitle: npc.customRollTitle ?? '',
   danger: npc.danger ?? '',
