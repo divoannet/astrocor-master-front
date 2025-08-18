@@ -6,7 +6,7 @@ import { CgReorder } from "react-icons/cg";
 import { LuCheck, LuFolderInput, LuFolderMinus, LuFolderPlus, LuTextCursorInput, LuUserPlus, LuX } from "react-icons/lu";
 
 import { useNpcStore, usePageStore } from "@/store";
-import type { TreeGroupItem } from "../db/types";
+import type { TreeGroupItem } from "../../db/types";
 import { useNpcFormStore } from "@/store/npcForm/store";
 import defaultAvatar from '@/assets/default_avatar.png';
 
@@ -117,20 +117,21 @@ export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
             size='sm'
           >
             <Editable.Preview
+              onClick={handleItemClick}
               _hover={{ bg: 'none', cursor: 'pointer' }}
             />
             <Editable.Input />
             <Editable.Control>
-              <Editable.SubmitTrigger asChild>
-                <IconButton onClick={handleSaveName} variant="ghost" size="xs">
-                  <LuCheck />
-                </IconButton>
-              </Editable.SubmitTrigger>
               <Editable.CancelTrigger asChild>
                 <IconButton onClick={handleResetName} variant="ghost" size="xs">
                   <LuX />
                 </IconButton>
               </Editable.CancelTrigger>
+              <Editable.SubmitTrigger asChild>
+                <IconButton onClick={handleSaveName} variant="ghost" size="xs">
+                  <LuCheck />
+                </IconButton>
+              </Editable.SubmitTrigger>
             </Editable.Control>
           </Editable.Root>
         </Box>

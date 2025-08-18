@@ -43,7 +43,7 @@ export interface NpcStoreActionTypes {
   activeId: null | number,
 
   loadNpcList: () => Promise<void>,
-  addFolder: (parentId: number) => Promise<void>,
+  addFolder: (parentId: number | null) => Promise<void>,
   updateFolder: (group: Partial<TreeGroupItem>) => Promise<void>,
   removeFolder: (id: number) => Promise<void>,
   moveFolder: (id: number, parentId: number) => Promise<void>,

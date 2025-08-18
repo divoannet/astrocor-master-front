@@ -10,16 +10,16 @@ export const NpcTree = () => {
   const toggleFolder = useNpcStore(state => state.toggleFolder);
   const updateFolder = useNpcStore(state => state.updateFolder);
 
-  const [open, setOpen] = useState(false);
+  const [regionModalOpen, setRegionModalOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<number | undefined>(undefined);
 
   const handleMoveStart = (groupId: number) => {
     setActiveGroup(groupId);
-    setOpen(true);
+    setRegionModalOpen(true);
   }
 
   const handleOpenChange = (open: boolean) => {
-    setOpen(open);
+    setRegionModalOpen(open);
     if (!open) {
       setActiveGroup(undefined);
     }
@@ -41,10 +41,15 @@ export const NpcTree = () => {
   return (
     <div>
       {groups.map(group => (
-        <NpcTreeItem depth={0} key={group.id} group={group} onMoveStart={handleMoveStart} />
+        <NpcTreeItem
+          depth={0}
+          key={group.id}
+          group={group}
+          onMoveStart={handleMoveStart}
+        />
       ))}
       <RegionPicker
-        open={open}
+        open={regionModalOpen}
         onOpenChange={handleOpenChange}
         onChange={handleMoveGroup}
         activeGroup={activeGroup}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { RegionPicker } from "@/components/RegionPicker";
 
 export const RegionSelect = () => {
-  const region = useNpcStore(state => state.getRegion);
+  const region = useNpcStore(state => state.region);
   const groupId = useNpcStore(state => state.groupId);
   const setGroupId = useNpcStore(state => state.setGroupId);
   const updateNpc = useNpcStore(state => state.updateNpc);
@@ -23,7 +23,7 @@ export const RegionSelect = () => {
   }
 
   return <div>
-    <Badge _hover={{ cursor: 'pointer' }} onDoubleClick={() => setEdit(true)}>{region()}</Badge>
+    <Badge _hover={{ cursor: 'pointer' }} onDoubleClick={() => setEdit(true)}>{region}</Badge>
     <RegionPicker
       open={edit}
       onOpenChange={setEdit}

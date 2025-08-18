@@ -20,7 +20,7 @@ export const RegionPicker = ({ open, onOpenChange, onChange, activeGroup, hideAc
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Переместить персонажа</Dialog.Title>
+              <Dialog.Title>Переместить {hideActiveGroup ? 'группу' : 'персонажа'}</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
               {groups.map((item) => {

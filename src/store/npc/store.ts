@@ -34,6 +34,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
       const list = await getNpcList(true);
       let groups = await getGroupTree();
       let groupList = await getGroupList();
+      get().getRegion();
 
       list.forEach((item: NPCListItem) => {
         const region = item.region || 'Прочие';
@@ -75,10 +76,10 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
   },
 
   addFolder: async (parentId) => {
-    get().toggleFolder(parentId, true);
+    parentId !== null && get().toggleFolder(parentId, true);
     await saveGroup({
       name: 'Новая группа',
-      parentId,
+      parentId: parentId || null,
       sortOrder: 0,
       open: false,
     });
@@ -211,7 +212,9 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
       return isRoot ? region.name : `${getRoute(region.parentId as number)} » ${region.name}`;
     }
 
-    return getRoute(get().groupId);
+    const region = getRoute(get().groupId);
+    set({ region });
+    return region;
   },
 
   type: '',
