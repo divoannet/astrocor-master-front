@@ -5,6 +5,9 @@ export const usePageStore = create<PageStoreType>(set => ({
   deleteDialogOpen: false,
   toggleDeleteDialog: open => set(state => ({ deleteDialogOpen: typeof open === 'boolean' ? open : !state.deleteDialogOpen })),
 
+  reorderDialogOpen: false,
+  toggleReorderDialog: open => set(state => ({ reorderDialogOpen: typeof open === 'boolean' ? open : !state.reorderDialogOpen })),
+
   rollsSettingDialogOpen: false,
   toggleRollsSettingDialog: open => set(state => ({ rollsSettingDialogOpen: typeof open === 'boolean' ? open : !state.rollsSettingDialogOpen })),
 

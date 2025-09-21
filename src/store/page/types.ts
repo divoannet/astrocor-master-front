@@ -7,6 +7,9 @@ export interface PageStoreType {
   rollsSettingDialogOpen: boolean;
   toggleRollsSettingDialog: (open?: boolean) => void;
 
+  reorderDialogOpen: boolean;
+  toggleReorderDialog: (open?: boolean) => void;
+
   deleteDialogOpen: boolean;
   toggleDeleteDialog: (open?: boolean) => void;
 

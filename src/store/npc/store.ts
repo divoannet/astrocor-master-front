@@ -2,7 +2,7 @@ import { create } from "zustand/react";
 import { type NpcStoreTypes, type NpcStoreActionTypes } from "./types";
 import { toaster } from "@/components/ui/toaster";
 import { deleteNPC, getNpcById, getNpcList, saveNpc, saveGroup, getGroupTree, deleteGroup, getGroupById, getGroupList } from "@/components/NpcList/db";
-import type { Group, NPCListItem } from "@/components/NpcList/db/types";
+import type { NPCListItem } from "@/components/NpcList/db/types";
 
 export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get) => ({
   fetching: {

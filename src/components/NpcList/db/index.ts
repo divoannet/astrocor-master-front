@@ -90,7 +90,7 @@ const composeGroupTree = (groups: Group[], parentId: number | null): TreeGroupIt
   return groups.filter(item => item.parentId === parentId).map(group => ({
     ...group,
     childern: composeGroupTree(groups, group.id),
-  })).sort((a, b) => b.sortOrder - a.sortOrder);
+  })).sort((a, b) => a.sortOrder - b.sortOrder);
 };
 
 export const getGroupList = async () => {

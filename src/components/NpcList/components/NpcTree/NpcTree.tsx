@@ -1,7 +1,11 @@
-import { useNpcStore } from "@/store";
-import { NpcTreeItem } from "./NpcTreeItem";
-import { RegionPicker } from "@/components/RegionPicker";
 import { useState } from "react";
+import { useNpcStore } from "@/store";
+import { RegionPicker } from "@/components/RegionPicker";
+import { ReorderDialog } from "@/components/ReorderDialog";
+import type { TreeGroupItem } from "../../db/types";
+import { NpcTreeItem } from "./NpcTreeItem";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export const NpcTree = () => {
   const groups = useNpcStore(state => state.groups);
@@ -12,6 +16,8 @@ export const NpcTree = () => {
 
   const [regionModalOpen, setRegionModalOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<number | undefined>(undefined);
+
+  const [selectedGroup, setSelectedGroup] = useState<TreeGroupItem | null>(null);
 
   const handleMoveStart = (groupId: number) => {
     setActiveGroup(groupId);
@@ -24,7 +30,7 @@ export const NpcTree = () => {
       setActiveGroup(undefined);
     }
   }
-  
+
   const handleMoveGroup = async (to: number) => {
     const group = groupList.find(item => item.id === activeGroup);
     if (!group) return;
@@ -45,6 +51,7 @@ export const NpcTree = () => {
           depth={0}
           key={group.id}
           group={group}
+          onSelect={setSelectedGroup}
           onMoveStart={handleMoveStart}
         />
       ))}
@@ -55,6 +62,13 @@ export const NpcTree = () => {
         activeGroup={activeGroup}
         hideActiveGroup={true}
       />
+      <DndProvider backend={HTML5Backend}>
+        {selectedGroup && (
+          <ReorderDialog
+            group={selectedGroup}
+          />
+        )}
+      </DndProvider>
     </div>
   )
 }

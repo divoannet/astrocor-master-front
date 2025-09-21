@@ -14,9 +14,10 @@ interface Props {
   group: TreeGroupItem;
   depth: number;
   onMoveStart: (groupId: number) => void;
+  onSelect: (group: TreeGroupItem | null) => void;
 }
 
-export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
+export const NpcTreeItem = ({ group, depth, onMoveStart, onSelect }: Props) => {
   const [edit, setEdit] = useState(false);
   const [groupName, setGroupName] = useState('');
   const list = useNpcStore(state => state.npcList);
@@ -32,6 +33,7 @@ export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
   const setFormGroupId = useNpcFormStore(state => state.setGroupId);
 
   const toggleCreateNpcModal = usePageStore(state => state.toggleCreateNpcModal);
+  const toggleReorderDialog = usePageStore(state => state.toggleReorderDialog);
 
   const chars = list.filter(item => item.groupId === group.id);
 
@@ -48,6 +50,8 @@ export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
         setEdit(true);
         break;
       case 'reorder-folder':
+        onSelect(group);
+        toggleReorderDialog(true);
         break;
       case 'new-folder':
         addFolder(group.id);
@@ -153,7 +157,7 @@ export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
                   </Menu.Item>
                   {depth < 3 && (
                     <Menu.Item value="new-folder">
-                      <LuFolderPlus /> Добавить вложенную группу
+                      <LuFolderPlus /> Добавить подгруппу
                     </Menu.Item>
                   )}
                   {group.childern.length > 1 && (
@@ -179,7 +183,13 @@ export const NpcTreeItem = ({ group, depth, onMoveStart }: Props) => {
       {group.open && <Box pl={6}>
         <Stack>
           {group.childern.length > 0 && group.childern.map(childGroup => (
-            <NpcTreeItem key={childGroup.id} group={childGroup} depth={depth + 1} onMoveStart={onMoveStart} />
+            <NpcTreeItem
+              key={childGroup.id} 
+              group={childGroup} 
+              depth={depth + 1} 
+              onMoveStart={onMoveStart}
+              onSelect={onSelect}
+            />
           ))}
         </Stack>
         <Box pb={2}>

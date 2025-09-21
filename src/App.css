@@ -149,6 +149,10 @@ body.notFixed {
   overflow-y: auto;
 }
 
+.reorderGroupItem {
+  padding: 4px 12px;
+}
+
 *::selection {
   background: #89928a;
 }
