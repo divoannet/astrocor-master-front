@@ -90,6 +90,41 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
     get().loadNpcList();
   },
   removeFolder: async (id) => {
+    const findAllChildren = async (folderId: number): Promise<number[]> => {
+      const allGroups = await getGroupList();
+      const children: number[] = [];
+      
+      const recursive = (id: number) => {
+      const childFolders = allGroups.filter(g => g.parentId === id);
+      childFolders.forEach(folder => {
+        children.push(folder.id);
+        recursive(folder.id);
+      });
+      };
+      
+      recursive(folderId);
+      return children;
+    };
+
+    const childrenIds = await findAllChildren(id);
+
+    const npcsToMove = get().npcList.filter(npc => 
+      npc.groupId === id || [id, ...childrenIds].includes(npc.groupId)
+    );
+
+    const group = get().groupList.find(group => group.id === id);
+    const groupToMove = group?.parentId || 0;
+
+    for (const npc of npcsToMove) {
+      await saveNpc({
+        ...npc,
+        groupId: groupToMove,
+      })
+    }
+
+    for (const childId of childrenIds){
+      await deleteGroup(childId);
+    }
     await deleteGroup(id);
     get().loadNpcList();
   },
