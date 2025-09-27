@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePageStore, useNpcStore } from "@/store";
 import { Button, Dialog } from "@chakra-ui/react"
-import type { TreeGroupItem } from "../NpcList/db/types";
+import type { TreeGroupItem, RootTreeGroupItem } from "../NpcList/db/types";
 import { Item } from "./Item";
 
 interface Props {
-  group: TreeGroupItem;
+  group: RootTreeGroupItem;
 }
 
 export const ReorderDialog = ({ group }: Props) => {

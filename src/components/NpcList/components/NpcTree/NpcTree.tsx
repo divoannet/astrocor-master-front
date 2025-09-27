@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { useNpcStore } from "@/store";
-import { RegionPicker } from "@/components/RegionPicker";
-import { ReorderDialog } from "@/components/ReorderDialog";
-import type { TreeGroupItem } from "../../db/types";
-import { NpcTreeItem } from "./NpcTreeItem";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { Flex, IconButton } from "@chakra-ui/react";
+import { TiFolder } from "react-icons/ti";
+import { CgReorder } from "react-icons/cg";
+import { Tooltip } from "../../../ui/tooltip";
+
+import { useNpcStore, usePageStore } from "@/store";
+import { RegionPicker } from "@/components/RegionPicker";
+import { ReorderDialog } from "@/components/ReorderDialog";
+import type { RootTreeGroupItem } from "../../db/types";
+import { NpcTreeItem } from "./NpcTreeItem";
 
 export const NpcTree = () => {
   const groups = useNpcStore(state => state.groups);
@@ -13,11 +18,13 @@ export const NpcTree = () => {
   const loadNpcList = useNpcStore(state => state.loadNpcList);
   const toggleFolder = useNpcStore(state => state.toggleFolder);
   const updateFolder = useNpcStore(state => state.updateFolder);
+  const addFolder = useNpcStore(state => state.addFolder);
+  const toggleReorderDialog = usePageStore(state => state.toggleReorderDialog);
 
   const [regionModalOpen, setRegionModalOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<number | undefined>(undefined);
 
-  const [selectedGroup, setSelectedGroup] = useState<TreeGroupItem | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<RootTreeGroupItem | null>(null);
 
   const handleMoveStart = (groupId: number) => {
     setActiveGroup(groupId);
@@ -44,8 +51,33 @@ export const NpcTree = () => {
     await toggleFolder(group.id, true);
   }
 
+  const handleReorderClick = () => {
+    const group: RootTreeGroupItem = {
+      id: null,
+      name: 'Корневая',
+      parentId: null,
+      sortOrder: 0,
+      open: true,
+      childern: groups,
+    }
+    setSelectedGroup(group);
+    toggleReorderDialog(true);
+  }
+
+  const handleAddClick = () => {
+    addFolder(null);
+  }
+
   return (
     <div>
+      <Flex justify="flex-end" gap={2} mb={4}>
+        <Tooltip content="Навести порядок">
+          <IconButton variant='ghost' p={0} onClick={handleReorderClick} size='xs'><CgReorder /></IconButton>
+        </Tooltip>
+        <Tooltip content="Новая папка">
+          <IconButton variant='ghost' p={0} onClick={handleAddClick}  size='xs'><TiFolder /></IconButton>
+        </Tooltip>
+      </Flex>
       {groups.map(group => (
         <NpcTreeItem
           depth={0}

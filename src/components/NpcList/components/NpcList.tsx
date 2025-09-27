@@ -8,7 +8,6 @@ import { handleImportClick } from "../helpers";
 import { NpcTree } from "./NpcTree";
 
 export const NpcList = () => {
-  const addFolder = useNpcStore(state => state.addFolder);
   const loadNpcList = useNpcStore(state => state.loadNpcList);
 
   const toggleCreateModal = usePageStore(state => state.toggleCreateNpcModal);
@@ -21,9 +20,6 @@ export const NpcList = () => {
         break;
       case 'export':
         await exportNpcData();
-        break;
-      case 'create_folder':
-        await addFolder(null);
         break;
     }
   }
@@ -47,7 +43,6 @@ export const NpcList = () => {
               <Menu.Content>
                 <Menu.Item value="import"> <LuFileJson2 />Импортировать</Menu.Item>
                 <Menu.Item value="export"> <LuDownload />Скачать файл</Menu.Item>
-                <Menu.Item value="create_folder"> <LuFolder />Новая группа</Menu.Item>
               </Menu.Content>
             </Menu.Positioner>
           </Portal>

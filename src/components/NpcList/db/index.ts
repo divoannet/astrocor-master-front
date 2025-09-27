@@ -8,6 +8,12 @@ const STORE_NAME = 'npcs';
 const GROUP_STORE_NAME = 'groups';
 const DB_VERSION = 15;
 
+export interface ExportDataTypeV1 {
+  version: number,
+  chars: Partial<NPC>[],
+  groups: Partial<TreeGroupItem>[],
+}
+
 export const initDB = async () => {
   return await openDB(DB_NAME, DB_VERSION, {
     upgrade: async (db, oldVersion, _, transaction) => {
@@ -147,7 +153,13 @@ export const deleteNPC = async (id: number) => {
 
 export const exportNpcData = async () => {
   const allNPCs = await getNpcList(true);
-  const dataStr = JSON.stringify(allNPCs, null, 2);
+  const allGroups = await getGroupList();
+  const data = {
+    version: 1,
+    chars: allNPCs,
+    groups: allGroups,
+  }
+  const dataStr = JSON.stringify(data, null, 2);
   const dataBlob = new Blob([dataStr], { type: 'application/json' });
 
   const url = URL.createObjectURL(dataBlob);
@@ -159,11 +171,3 @@ export const exportNpcData = async () => {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
-
-export const importNpcData = async (json: string) => {
-  const data: Partial<NPC>[] = JSON.parse(json);
-  for (const npc of data) {
-    const id = npc.id || await getLastIndex(STORE_NAME) + 1;
-    await saveNpc({ id, ...npc });
-  }
-};

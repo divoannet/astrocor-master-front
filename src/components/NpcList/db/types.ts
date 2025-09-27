@@ -41,6 +41,8 @@ export interface Group {
   open: boolean;
 }
 
-export type TreeGroupItem = Group & {
+export interface TreeGroupItem extends Group {
   childern: TreeGroupItem[];
 }
+
+export interface RootTreeGroupItem extends Omit<TreeGroupItem, 'id'> { id: number | null };
