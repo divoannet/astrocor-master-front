@@ -36,6 +36,7 @@ export interface NpcStoreTypes {
 
 export interface NpcStoreActionTypes {
   npcList: NpcStoreTypes[],
+  npcsWitoutGroup: NpcStoreTypes[],
   regionList: Record<string, any[]>,
   groups: TreeGroupItem[],
   groupList: Group[],

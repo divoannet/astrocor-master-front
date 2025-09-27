@@ -11,10 +11,12 @@ import { RegionPicker } from "@/components/RegionPicker";
 import { ReorderDialog } from "@/components/ReorderDialog";
 import type { RootTreeGroupItem } from "../../db/types";
 import { NpcTreeItem } from "./NpcTreeItem";
+import { CharItem } from "./CharItem";
 
 export const NpcTree = () => {
   const groups = useNpcStore(state => state.groups);
   const groupList = useNpcStore(state => state.groupList);
+  const npcsWitoutGroup = useNpcStore(state => state.npcsWitoutGroup);
   const loadNpcList = useNpcStore(state => state.loadNpcList);
   const toggleFolder = useNpcStore(state => state.toggleFolder);
   const updateFolder = useNpcStore(state => state.updateFolder);
@@ -86,6 +88,9 @@ export const NpcTree = () => {
           onSelect={setSelectedGroup}
           onMoveStart={handleMoveStart}
         />
+      ))}
+      {npcsWitoutGroup.map(npc => (
+        <CharItem key={npc.id} char={npc} />
       ))}
       <RegionPicker
         open={regionModalOpen}

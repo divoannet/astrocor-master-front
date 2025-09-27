@@ -9,6 +9,7 @@ import { useNpcStore, usePageStore } from "@/store";
 import type { TreeGroupItem } from "../../db/types";
 import { useNpcFormStore } from "@/store/npcForm/store";
 import defaultAvatar from '@/assets/default_avatar.png';
+import { CharItem } from "./CharItem";
 
 interface Props {
   group: TreeGroupItem;
@@ -184,9 +185,9 @@ export const NpcTreeItem = ({ group, depth, onMoveStart, onSelect }: Props) => {
         <Stack>
           {group.childern.length > 0 && group.childern.map(childGroup => (
             <NpcTreeItem
-              key={childGroup.id} 
-              group={childGroup} 
-              depth={depth + 1} 
+              key={childGroup.id}
+              group={childGroup}
+              depth={depth + 1}
               onMoveStart={onMoveStart}
               onSelect={onSelect}
             />
@@ -194,24 +195,10 @@ export const NpcTreeItem = ({ group, depth, onMoveStart, onSelect }: Props) => {
         </Stack>
         <Box pb={2}>
           {chars.map(char => (
-            <Flex
+            <CharItem
               key={char.id}
-              fontWeight={char.id === activeId ? '700' : '300'}
-              color={char.id === activeId ? '#3f4d3f' : 'dark'}
-              cursor='pointer'
-              onClick={() => setActiveId(char.id)}
-              alignContent='baseline'
-              gap='12px'
-            >
-              <Image
-                w='24px'
-                h='24px'
-                borderRadius='2xl'
-                src={char.image || defaultAvatar}
-                border='solid 1px'
-              />
-              {char.name}
-            </Flex>
+              char={char}
+            />
           ))}
           {isEmpty && (
             <Text fontSize='sm' fontStyle='italic' color='gray'>тут пусто</Text>

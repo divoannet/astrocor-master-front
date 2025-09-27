@@ -31,6 +31,7 @@ export interface NPCListItem {
   name: string;
   image: string;
   region: string;
+  groupId: number;
 }
 
 export interface Group {

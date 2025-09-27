@@ -19,6 +19,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
   },
 
   npcList: [],
+  npcsWitoutGroup: [],
   regionList: {},
   groups: [],
   groupList: [],
@@ -36,8 +37,14 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
       let groupList = await getGroupList();
       get().getRegion();
 
+      const npcsWitoutGroup: NpcStoreTypes[] = [];
+
       list.forEach((item: NPCListItem) => {
         const region = item.region || 'Прочие';
+        const group = groupList.find(group => group.id === item.groupId);
+        if (!group) {
+          npcsWitoutGroup.push(item as NpcStoreTypes);
+        }
         if (regions[region]) {
           regions[region].push(item);
           return;
@@ -50,6 +57,7 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
         regionList: regions,
         groups,
         groupList,
+        npcsWitoutGroup,
       })
       if (list[0] && get().activeId === null) {
         const id = get().activeId || list[0]?.id || 0;
