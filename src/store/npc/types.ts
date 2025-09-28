@@ -47,7 +47,6 @@ export interface NpcStoreActionTypes {
   addFolder: (parentId: number | null) => Promise<void>,
   updateFolder: (group: Partial<TreeGroupItem>) => Promise<void>,
   removeFolder: (id: number) => Promise<void>,
-  moveFolder: (id: number, parentId: number) => Promise<void>,
   toggleFolder: (id: number, open?: boolean) => void;
   setCheckedRegion: (value: string) => void,
   setActiveId: (activeId: number | null) => Promise<void>,

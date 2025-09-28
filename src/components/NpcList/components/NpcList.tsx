@@ -2,7 +2,7 @@ import { useNpcStore, usePageStore } from "@/store";
 import { Box, Button, Group, IconButton, Menu, Portal } from "@chakra-ui/react";
 import { CreateNpcForm } from "./createNpcForm";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { LuDownload, LuFileJson2, LuFolder } from "react-icons/lu";
+import { LuDownload, LuFileJson2 } from "react-icons/lu";
 import { exportNpcData } from "../db";
 import { handleImportClick } from "../helpers";
 import { NpcTree } from "./NpcTree";

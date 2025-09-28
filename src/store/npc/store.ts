@@ -136,7 +136,6 @@ export const useNpcStore = create<NpcStoreTypes & NpcStoreActionTypes>((set, get
     await deleteGroup(id);
     get().loadNpcList();
   },
-  moveFolder: async (id, parentId) => { },
   toggleFolder: async (id, open) => {
     if (typeof id !== 'number') return;
 

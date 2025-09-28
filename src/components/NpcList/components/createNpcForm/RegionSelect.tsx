@@ -1,53 +1,46 @@
+import { useState } from "react";
+import { TiFolder } from "react-icons/ti";
+import { Field, Input, InputGroup } from "@chakra-ui/react"
 import { useNpcStore } from "@/store";
 import { useNpcFormStore } from "@/store/npcForm/store";
-import { Box, Field, Input, Popover } from "@chakra-ui/react"
-import { useEffect, useState } from "react";
+import { RegionPicker } from "@/components/RegionPicker";
 
 export const RegionSelect = () => {
-  const region = useNpcFormStore(state => state.region);
-  const setRegion = useNpcFormStore(state => state.setRegion);
-  const regionList = useNpcStore(state => state.regionList);
+  const groupList = useNpcStore(state => state.groupList);
+  const groupId = useNpcFormStore(state => state.groupId);
+  const setGroupId = useNpcFormStore(state => state.setGroupId);
 
-  const [regions, setRegions] = useState<string[]>([]);
-  const [filterRegions, setFilterRegions] = useState<string[]>([]);
-  const [focus, setFocus] = useState(false);
+  const [edit, setEdit] = useState(false);
 
-  useEffect(() => {
-    setFilterRegions(regions.filter(item => item.includes(region)))
-  }, [region]);
+  const handleSelectGroup = async (newGroupId: number) => {
+    setGroupId(newGroupId);
+    setEdit(false);
+  }
 
-  useEffect(() => {
-    setRegions(Object.keys(regionList));
-  }, [regionList]);
+  const getRegion = () => {
+    const getRoute = (regionId: number): string => {
+      const region = groupList.find(group => group.id === regionId);
+      if (!region) return '--';
+      const isRoot = region.parentId === null;
+      return isRoot ? region.name : `${getRoute(region.parentId as number)} » ${region.name}`;
+    }
+
+    const region = getRoute(groupId);
+    return region;
+  };
 
   return (
     <Field.Root>
       <Field.Label>Регион</Field.Label>
-      <Input
-        width='100%'
-        value={region}
-        size="xs"
-        onChange={e => setRegion(e.target.value)}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+      <InputGroup startElement={<TiFolder />}>
+        <Input width='100%' size="xs"  onClick={() => setEdit(true)} value={getRegion()} placeholder="Группа" />
+      </InputGroup>
+      <RegionPicker
+        open={edit}
+        onOpenChange={setEdit}
+        onChange={handleSelectGroup}
+        activeGroup={groupId}
       />
-      <Popover.Root
-        open={focus} autoFocus={false}
-        positioning={{ offset: { crossAxis: 200, mainAxis: 0 } }}
-      >
-        <Popover.Trigger>
-          <Box></Box>
-        </Popover.Trigger>
-        <Popover.Positioner>
-          <Popover.Content>
-            <Box className="region-list">
-              {filterRegions.map(region => (
-                <Box key={region} className="region-item" onClick={() => setRegion(region)}>{region}</Box>
-              ))}
-            </Box>
-          </Popover.Content>
-        </Popover.Positioner>
-      </Popover.Root>
     </Field.Root>
   )
 }

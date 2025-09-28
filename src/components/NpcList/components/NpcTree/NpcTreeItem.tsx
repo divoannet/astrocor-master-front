@@ -1,5 +1,5 @@
 import { useEffect, useState, type MouseEvent } from "react";
-import { Box, Image, Center, Flex, IconButton, Menu, Portal, Stack, type MenuSelectionDetails, Text, Editable } from "@chakra-ui/react";
+import { Box, Center, Flex, IconButton, Menu, Portal, Stack, type MenuSelectionDetails, Text, Editable } from "@chakra-ui/react";
 import { TiFolder, TiFolderOpen } from "react-icons/ti";
 import { HiDotsVertical } from "react-icons/hi";
 import { CgReorder } from "react-icons/cg";
@@ -8,7 +8,6 @@ import { LuCheck, LuFolderInput, LuFolderMinus, LuFolderPlus, LuTextCursorInput,
 import { useNpcStore, usePageStore } from "@/store";
 import type { TreeGroupItem } from "../../db/types";
 import { useNpcFormStore } from "@/store/npcForm/store";
-import defaultAvatar from '@/assets/default_avatar.png';
 import { CharItem } from "./CharItem";
 
 interface Props {
@@ -23,8 +22,6 @@ export const NpcTreeItem = ({ group, depth, onMoveStart, onSelect }: Props) => {
   const [groupName, setGroupName] = useState('');
   const list = useNpcStore(state => state.npcList);
   const loadNpcList = useNpcStore(state => state.loadNpcList);
-  const activeId = useNpcStore(state => state.activeId);
-  const setActiveId = useNpcStore(state => state.setActiveId);
   const groupId = useNpcStore(state => state.groupId);
   const updateFolder = useNpcStore(state => state.updateFolder);
   const addFolder = useNpcStore(state => state.addFolder);
